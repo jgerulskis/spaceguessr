@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SpaceGuessr</title>
+  <meta name="description" content="GeoGuessr for the solar system. Five real photos, name the world, drop the pin.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='22' fill='%232fb8a6'/%3E%3Cellipse cx='32' cy='32' rx='30' ry='9' fill='none' stroke='%23f2c14e' stroke-width='4' transform='rotate(-20 32 32)'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ Title ============ -->
+<section id="screen-title" class="screen active">
+  <div class="stars"></div>
+  <div class="deco deco-boomerang-1"></div>
+  <div class="deco deco-boomerang-2"></div>
+  <div class="deco deco-atom"></div>
+  <div class="deco deco-rocket"></div>
+  <div class="deco deco-burst-1"></div>
+  <div class="deco deco-burst-2"></div>
+  <div class="scanlines"></div>
+  <div class="title-card">
+    <div class="marquee">
+      <h1><span class="t1">Space</span><span class="t2">Guessr</span></h1>
+      <p class="marquee-sub">★ A coin-op tour of the solar system ★</p>
+    </div>
+    <p class="tagline">Five real photos from around the solar system.<br>Name the world. Drop the pin.</p>
+    <div class="title-buttons">
+      <button id="btn-random" class="btn primary big">▶ Play</button>
+      <button id="btn-daily" class="btn big">Daily challenge</button>
+    </div>
+    <p class="press-start">PRESS START</p>
+    <p class="hiscore">HI-SCORE <b id="title-best">0</b> / 25,000</p>
+    <ol class="how">
+      <li>Pick the world in the strip at the bottom right.</li>
+      <li>If it has a map, click it to place your pin. Closer is better, 5,000 max.</li>
+      <li>Gas giants, the Sun and spacecraft are whole-body guesses: name it and you're done.</li>
+    </ol>
+    <p class="credits-line">Imagery: NASA, JPL-Caltech, GSFC, JHUAPL, USGS Astrogeology, ESA. Music is generated live. Not affiliated with GeoGuessr.</p>
+  </div>
+  <button class="btn-audio" title="Music and sound on/off" aria-label="Toggle sound">🔊</button>
+</section>
+
+<!-- ============ Round ============ -->
+<section id="screen-round" class="screen">
+  <div id="photo-wrap"><img id="photo" alt="Where in the solar system is this?"></div>
+
+  <header id="hud">
+    <div class="hud-left">
+      <span class="brand">Space<i>Guessr</i></span>
+      <span id="hud-round">Round 1 / 5</span>
+      <span id="hud-mode" class="muted"></span>
+    </div>
+    <div class="hud-right">
+      <span id="hud-score">0 pts</span>
+      <button id="btn-hint" class="btn small" title="Reveal a hint (costs 25% of this round)">Hint</button>
+      <button class="btn-audio" title="Music and sound on/off" aria-label="Toggle sound">🔊</button>
+    </div>
+  </header>
+  <div id="hint-text" class="hint hidden"></div>
+
+  <aside id="guess-panel">
+    <div id="picker"></div>
+    <div id="map-card" class="no-map">
+      <div id="map"></div>
+      <div id="map-note">Pick a target above</div>
+      <button id="btn-expand" class="btn tiny" title="Expand / collapse map">⤢</button>
+    </div>
+    <div class="panel-actions">
+      <button id="btn-guess" class="btn primary" disabled>Pick a target</button>
+    </div>
+  </aside>
+
+  <div id="reveal" class="reveal hidden">
+    <div class="reveal-top">
+      <div class="reveal-points"><span id="reveal-points">0</span><small>pts</small></div>
+      <div id="reveal-stamp" class="stamp">BULLSEYE!</div>
+    </div>
+    <div class="reveal-body">
+      <h2 id="reveal-title"></h2>
+      <p id="reveal-outcome" class="outcome"></p>
+      <p id="reveal-fact" class="fact"></p>
+      <p id="reveal-credit" class="credit"></p>
+    </div>
+    <button id="btn-next" class="btn primary">Next round</button>
+  </div>
+</section>
+
+<!-- ============ Results ============ -->
+<section id="screen-results" class="screen">
+  <div class="stars"></div>
+  <div class="deco deco-boomerang-2"></div>
+  <div class="deco deco-burst-1"></div>
+  <div class="deco deco-atom"></div>
+  <div class="scanlines"></div>
+  <div class="results-card">
+    <p class="arcade-label">GAME OVER · <span id="results-mode"></span></p>
+    <h2 class="arcade-score"><span id="results-total">0</span> <small>/ <span id="results-max">25,000</span></small></h2>
+    <div id="results-rank" class="rank">SPACE CADET</div>
+    <p id="results-new" class="new-hi hidden">★ NEW HI-SCORE ★</p>
+    <p class="best">HI-SCORE <b id="results-best">0</b></p>
+    <table class="results">
+      <thead><tr><th>#</th><th>Location</th><th>Result</th><th>Points</th></tr></thead>
+      <tbody id="results-body"></tbody>
+    </table>
+    <div class="title-buttons">
+      <button id="btn-copy" class="btn">Copy results</button>
+      <button id="btn-again" class="btn primary">Play again</button>
+      <button id="btn-again-daily" class="btn">Daily</button>
+      <button id="btn-home" class="btn">Title</button>
+    </div>
+  </div>
+</section>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="vendor/three/three.min.js"></script>
+<script src="js/rng.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/score.js"></script>
+<script src="js/bodies.js"></script>
+<script src="js/locations.js"></script>
+<script src="js/map.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

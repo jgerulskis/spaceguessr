@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="#f2c14e" stroke-width="3" stroke-linecap="round">
+  <g transform="translate(100 100)">
+    <g id="s"><line x1="0" y1="-14" x2="0" y2="-92"/><circle cx="0" cy="-96" r="4" fill="#f2c14e" stroke="none"/></g>
+    <use href="#s" transform="rotate(30)"/><use href="#s" transform="rotate(60)"/><use href="#s" transform="rotate(90)"/><use href="#s" transform="rotate(120)"/><use href="#s" transform="rotate(150)"/><use href="#s" transform="rotate(180)"/><use href="#s" transform="rotate(210)"/><use href="#s" transform="rotate(240)"/><use href="#s" transform="rotate(270)"/><use href="#s" transform="rotate(300)"/><use href="#s" transform="rotate(330)"/>
+    <g id="t" stroke-width="2"><line x1="0" y1="-14" x2="0" y2="-60"/><circle cx="0" cy="-63" r="2.5" fill="#f2c14e" stroke="none"/></g>
+    <use href="#t" transform="rotate(15)"/><use href="#t" transform="rotate(45)"/><use href="#t" transform="rotate(75)"/><use href="#t" transform="rotate(105)"/><use href="#t" transform="rotate(135)"/><use href="#t" transform="rotate(165)"/><use href="#t" transform="rotate(195)"/><use href="#t" transform="rotate(225)"/><use href="#t" transform="rotate(255)"/><use href="#t" transform="rotate(285)"/><use href="#t" transform="rotate(315)"/><use href="#t" transform="rotate(345)"/>
+    <circle r="9" fill="#f2c14e" stroke="none"/>
+  </g>
+</svg>
